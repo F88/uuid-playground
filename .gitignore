@@ -102,6 +102,13 @@ pkg/
 
 ### Project ###
 
+##  Temporary files ##
+tmp/
+temp/
+
+## Local files ##
+local-data/
+
 ## environment variables ##
 # Vite
 .env
