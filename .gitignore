@@ -94,11 +94,11 @@ node_modules/
 temp/
 
 # Output directories
-dist/
-dist-types/
-lib/
-lib-types/
-pkg/
+# dist/
+# dist-types/
+# lib/
+# lib-types/
+# pkg/
 
 ### Project ###
 
