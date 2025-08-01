@@ -16,7 +16,7 @@ A casual tool for generating and decode UUIDs with comprehensive format.
 
 **UUID Generation**:
 
-- Functionality: Generate UUIDs in multiple versions (v1, v4, v7) with batch generation support
+- Functionality: Generate random UUIDs in multiple versions (v1, v4, v7) with batch generation support
 - Purpose: Provide developers with reliable UUID generation for various use cases
 - Trigger: Click generate button or select specific UUID version
 - Progression: Select version → Configure options → Generate → Copy to clipboard
