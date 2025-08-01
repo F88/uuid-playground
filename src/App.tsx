@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { v1 as uuidv1, v4 as uuidv4, v7 as uuidv7 } from "uuid";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,24 +12,36 @@ import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Info, RefreshCw, ClipboardCopy, Download, Trash2 } from "lucide-react";
 
+type UUIDVersion = "1" | "4" | "7";
+
 function App() {
   const [uuidToAnalyze, setUuidToAnalyze] = useState("");
-  const [selectedVersion, setSelectedVersion] = useState("4");
+  const [selectedVersion, setSelectedVersion] = useState<UUIDVersion>("4");
   const [quantity, setQuantity] = useState(5);
   const [generatedUuids, setGeneratedUuids] = useState<string[]>([]);
 
+  const generateUuid = (version: UUIDVersion): string => {
+    switch (version) {
+      case "1":
+        return uuidv1();
+      case "4":
+        return uuidv4();
+      case "7":
+        return uuidv7();
+      default:
+        return uuidv4();
+    }
+  };
+
   const handleGenerate = () => {
-    // Placeholder for UUID generation logic
-    const newUuid = `82a7a5a1-c77c-4288-87e3-d2c3c3fbc339`; // Example
+    const newUuid = generateUuid(selectedVersion);
     setGeneratedUuids([newUuid, ...generatedUuids]);
     setUuidToAnalyze(newUuid);
   };
 
   const handleGenerateBatch = () => {
-    // Placeholder for batch UUID generation logic
-    const batch = Array.from(
-      { length: quantity },
-      (_, i) => `6512d293-0198-1-9b47-7df285e839c4-${i}` // Example
+    const batch = Array.from({ length: quantity }, () =>
+      generateUuid(selectedVersion)
     );
     setGeneratedUuids([...batch, ...generatedUuids]);
   };
