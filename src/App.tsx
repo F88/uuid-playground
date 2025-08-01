@@ -116,7 +116,9 @@ function App() {
                 <ToggleGroup
                   type="single"
                   value={selectedVersion}
-                  onValueChange={(value) => value && setSelectedVersion(value)}
+                  onValueChange={(value: UUIDVersion) =>
+                    value && setSelectedVersion(value)
+                  }
                   className="w-full grid grid-cols-3"
                 >
                   <ToggleGroupItem
