@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v1 as uuidv1, v4 as uuidv4, v7 as uuidv7 } from "uuid";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,11 +14,136 @@ import { Info, RefreshCw, ClipboardCopy, Download, Trash2 } from "lucide-react";
 
 type UUIDVersion = "1" | "4" | "7";
 
+interface UUIDAnalysis {
+  isValid: boolean;
+  version?: number;
+  variant?: string;
+  timestamp?: string;
+  clockSeq?: string;
+  node?: string;
+  randomBits?: string;
+  hexString: string;
+}
+
+const analyzeUUID = (uuid: string): UUIDAnalysis => {
+  const cleanUuid = uuid.replace(/-/g, "");
+
+  if (!/^[0-9a-fA-F]{32}$/.test(cleanUuid)) {
+    return {
+      isValid: false,
+      hexString: uuid,
+    };
+  }
+
+  const version = parseInt(cleanUuid[12], 16);
+  const variantBits = parseInt(cleanUuid[16], 16);
+
+  let variant = "Unknown";
+  if ((variantBits & 0x8) === 0) {
+    variant = "Reserved (NCS)";
+  } else if ((variantBits & 0xc) === 0x8) {
+    variant = "RFC 4122";
+  } else if ((variantBits & 0xe) === 0xc) {
+    variant = "Microsoft";
+  } else {
+    variant = "Reserved";
+  }
+
+  const analysis: UUIDAnalysis = {
+    isValid: true,
+    version,
+    variant,
+    hexString: cleanUuid,
+  };
+
+  // Version-specific parsing
+  switch (version) {
+    case 1:
+      // Time-based UUID
+      const timeLow = cleanUuid.substring(0, 8);
+      const timeMid = cleanUuid.substring(8, 12);
+      const timeHi = cleanUuid.substring(12, 16);
+      const clockSeqHi = cleanUuid.substring(16, 18);
+      const clockSeqLow = cleanUuid.substring(18, 20);
+      const node = cleanUuid.substring(20, 32);
+
+      analysis.timestamp = `${timeLow}-${timeMid}-${timeHi}`;
+      analysis.clockSeq = `${clockSeqHi}${clockSeqLow}`;
+      analysis.node = node;
+      break;
+
+    case 4:
+      // Random UUID
+      analysis.randomBits = cleanUuid;
+      break;
+
+    case 7:
+      // Time-ordered UUID
+      const timestampMs = cleanUuid.substring(0, 12);
+      const randomA = cleanUuid.substring(12, 16);
+      const randomB = cleanUuid.substring(16, 32);
+
+      analysis.timestamp = timestampMs;
+      analysis.randomBits = `${randomA}${randomB}`;
+      break;
+  }
+
+  return analysis;
+};
+
+const formatTimestamp = (timestamp: string, version: number): string => {
+  try {
+    if (version === 1) {
+      // UUID v1 timestamp format: 60-bit timestamp in 100-nanosecond intervals since 1582-10-15
+      const timeLow = timestamp.substring(0, 8);
+      const timeMid = timestamp.substring(9, 13);
+      const timeHi = timestamp.substring(14, 18);
+
+      // Remove version bits from timeHi
+      const timeHiAndVersion = parseInt(timeHi, 16);
+      const timeHiOnly = timeHiAndVersion & 0x0fff;
+
+      // Reconstruct 60-bit timestamp
+      const fullTimestamp =
+        (BigInt(timeHiOnly) << 48n) |
+        (BigInt(parseInt(timeMid, 16)) << 32n) |
+        BigInt(parseInt(timeLow, 16));
+
+      // Convert to milliseconds since Unix epoch
+      // UUID epoch starts at 1582-10-15 00:00:00 UTC
+      const uuidEpochOffset = 122192928000000000n; // 100-nanosecond intervals
+      const unixTimestamp = (fullTimestamp - uuidEpochOffset) / 10000n;
+
+      const date = new Date(Number(unixTimestamp));
+      return date.toISOString();
+    } else if (version === 7) {
+      // UUID v7 timestamp format: 48-bit Unix timestamp in milliseconds
+      const timestampMs = parseInt(timestamp, 16);
+      const date = new Date(timestampMs);
+      return date.toISOString();
+    }
+  } catch (error) {
+    return "Invalid timestamp";
+  }
+
+  return "Unknown format";
+};
+
 function App() {
   const [uuidToAnalyze, setUuidToAnalyze] = useState("");
   const [selectedVersion, setSelectedVersion] = useState<UUIDVersion>("4");
   const [quantity, setQuantity] = useState(5);
   const [generatedUuids, setGeneratedUuids] = useState<string[]>([]);
+  const [uuidAnalysis, setUuidAnalysis] = useState<UUIDAnalysis | null>(null);
+
+  useEffect(() => {
+    if (uuidToAnalyze.trim()) {
+      const analysis = analyzeUUID(uuidToAnalyze.trim());
+      setUuidAnalysis(analysis);
+    } else {
+      setUuidAnalysis(null);
+    }
+  }, [uuidToAnalyze]);
 
   const generateUuid = (version: UUIDVersion): string => {
     switch (version) {
@@ -63,8 +188,7 @@ function App() {
             UUID Generator & Decoder
           </h1>
           <p className="text-lg text-muted-foreground mt-2">
-            Generate, analyze, and convert UUIDs with comprehensive metadata
-            extraction
+            The playground for UUID generation & decoding.
           </p>
         </header>
 
@@ -81,20 +205,132 @@ function App() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                <label
-                  htmlFor="uuid-analyze-input"
-                  className="text-sm font-medium"
-                >
-                  UUID
-                </label>
-                <Input
-                  id="uuid-analyze-input"
-                  placeholder="Enter a UUID to analyze..."
-                  value={uuidToAnalyze}
-                  onChange={(e) => setUuidToAnalyze(e.target.value)}
-                  className="bg-input font-mono border-border focus:ring-accent"
-                />
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="uuid-analyze-input"
+                    className="text-sm font-medium"
+                  >
+                    UUID
+                  </label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="uuid-analyze-input"
+                      placeholder="Enter a UUID to analyze..."
+                      value={uuidToAnalyze}
+                      onChange={(e) => setUuidToAnalyze(e.target.value)}
+                      className="bg-input font-mono border-border focus:ring-accent flex-1"
+                    />
+                  </div>
+                </div>
+
+                {/* Analysis Results */}
+                {uuidAnalysis && (
+                  <div className="space-y-3 pt-4 border-t border-border">
+                    <h4 className="text-sm font-medium text-primary">
+                      Analysis Results
+                    </h4>
+
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Valid:</span>
+                        <span
+                          className={
+                            uuidAnalysis.isValid
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }
+                        >
+                          {uuidAnalysis.isValid ? "Yes" : "No"}
+                        </span>
+                      </div>
+
+                      {uuidAnalysis.isValid && (
+                        <>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">
+                              Version:
+                            </span>
+                            <span>{uuidAnalysis.version}</span>
+                          </div>
+
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">
+                              Variant:
+                            </span>
+                            <span>{uuidAnalysis.variant}</span>
+                          </div>
+
+                          {uuidAnalysis.timestamp && (
+                            <div className="space-y-1">
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">
+                                  Timestamp:
+                                </span>
+                                <span className="font-mono text-xs">
+                                  {uuidAnalysis.timestamp}
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground text-xs">
+                                  Date:
+                                </span>
+                                <span className="text-xs">
+                                  {formatTimestamp(
+                                    uuidAnalysis.timestamp,
+                                    uuidAnalysis.version!
+                                  )}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+
+                          {uuidAnalysis.clockSeq && (
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">
+                                Clock Sequence:
+                              </span>
+                              <span className="font-mono text-xs">
+                                {uuidAnalysis.clockSeq}
+                              </span>
+                            </div>
+                          )}
+
+                          {uuidAnalysis.node && (
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">
+                                Node:
+                              </span>
+                              <span className="font-mono text-xs">
+                                {uuidAnalysis.node}
+                              </span>
+                            </div>
+                          )}
+
+                          {uuidAnalysis.randomBits && (
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">
+                                Random Bits:
+                              </span>
+                              <span className="font-mono text-xs break-all">
+                                {uuidAnalysis.randomBits}
+                              </span>
+                            </div>
+                          )}
+
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">
+                              Hex String:
+                            </span>
+                            <span className="font-mono text-xs break-all">
+                              {uuidAnalysis.hexString}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
