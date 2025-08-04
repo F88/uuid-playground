@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import { v1 as uuidv1, v4 as uuidv4, v7 as uuidv7 } from "uuid";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from 'react';
+import { v1 as uuidv1, v4 as uuidv4, v7 as uuidv7 } from 'uuid';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { toast, Toaster } from "sonner";
-import { Info, RefreshCw, ClipboardCopy, Download, Trash2 } from "lucide-react";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { toast, Toaster } from 'sonner';
+import { Info, RefreshCw, ClipboardCopy, Download, Trash2 } from 'lucide-react';
 
-type UUIDVersion = "1" | "4" | "7";
+type UUIDVersion = '1' | '4' | '7';
 
 interface UUIDAnalysis {
   isValid: boolean;
@@ -27,7 +27,7 @@ interface UUIDAnalysis {
 }
 
 const analyzeUUID = (uuid: string): UUIDAnalysis => {
-  const cleanUuid = uuid.replace(/-/g, "");
+  const cleanUuid = uuid.replace(/-/g, '');
 
   if (!/^[0-9a-fA-F]{32}$/.test(cleanUuid)) {
     return {
@@ -39,15 +39,15 @@ const analyzeUUID = (uuid: string): UUIDAnalysis => {
   const version = parseInt(cleanUuid[12], 16);
   const variantBits = parseInt(cleanUuid[16], 16);
 
-  let variant = "Unknown";
+  let variant = 'Unknown';
   if ((variantBits & 0x8) === 0) {
-    variant = "Reserved (NCS)";
+    variant = 'Reserved (NCS)';
   } else if ((variantBits & 0xc) === 0x8) {
-    variant = "RFC 4122";
+    variant = 'RFC 4122';
   } else if ((variantBits & 0xe) === 0xc) {
-    variant = "Microsoft";
+    variant = 'Microsoft';
   } else {
-    variant = "Reserved";
+    variant = 'Reserved';
   }
 
   const analysis: UUIDAnalysis = {
@@ -124,15 +124,15 @@ const formatTimestamp = (timestamp: string, version: number): string => {
       return date.toISOString();
     }
   } catch (error) {
-    return "Invalid timestamp";
+    return 'Invalid timestamp';
   }
 
-  return "Unknown format";
+  return 'Unknown format';
 };
 
 function App() {
-  const [uuidToAnalyze, setUuidToAnalyze] = useState("");
-  const [selectedVersion, setSelectedVersion] = useState<UUIDVersion>("7");
+  const [uuidToAnalyze, setUuidToAnalyze] = useState('');
+  const [selectedVersion, setSelectedVersion] = useState<UUIDVersion>('7');
   const [quantity, setQuantity] = useState(5);
   const [generatedUuids, setGeneratedUuids] = useState<string[]>([]);
   const [uuidAnalysis, setUuidAnalysis] = useState<UUIDAnalysis | null>(null);
@@ -148,11 +148,11 @@ function App() {
 
   const generateUuid = (version: UUIDVersion): string => {
     switch (version) {
-      case "1":
+      case '1':
         return uuidv1();
-      case "4":
+      case '4':
         return uuidv4();
-      case "7":
+      case '7':
         return uuidv7();
       default:
         return uuidv4();
@@ -167,7 +167,7 @@ function App() {
 
   const handleGenerateBatch = () => {
     const batch = Array.from({ length: quantity }, () =>
-      generateUuid(selectedVersion)
+      generateUuid(selectedVersion),
     );
     setGeneratedUuids([...batch, ...generatedUuids]);
   };
@@ -179,26 +179,26 @@ function App() {
   const handleCopyToClipboard = (uuid: string) => {
     navigator.clipboard.writeText(uuid);
     toast.success(uuid, {
-      icon: <ClipboardCopy className="w-4 h-4" />,
+      icon: <ClipboardCopy className="w-4 h-4"/>,
     });
   };
 
   const handleExport = () => {
     if (generatedUuids.length === 0) {
-      toast.error("No UUIDs to export.");
+      toast.error('No UUIDs to export.');
       return;
     }
-    const content = generatedUuids.join("\n");
-    const blob = new Blob([content], { type: "text/plain" });
+    const content = generatedUuids.join('\n');
+    const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "uuids.txt";
+    a.download = 'uuids.txt';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast.success("UUIDs exported successfully.");
+    toast.success('UUIDs exported successfully.');
   };
 
   return (
@@ -219,7 +219,7 @@ function App() {
             <Card className="bg-card border-border shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-primary">
-                  <Info className="w-5 h-5" />
+                  <Info className="w-5 h-5"/>
                   UUID Decorder
                 </CardTitle>
                 <CardDescription>
@@ -244,13 +244,13 @@ function App() {
                         className="bg-input font-mono border-border focus:ring-accent flex-1"
                       />
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="icon"
                         onClick={() => handleCopyToClipboard(uuidToAnalyze)}
-                        className="hover:bg-muted"
+                        className="hover:bg-accent"
                         disabled={!uuidAnalysis?.isValid}
                       >
-                        <ClipboardCopy className="w-4 h-4" />
+                        <ClipboardCopy className="w-4 h-4"/>
                       </Button>
                     </div>
                   </div>
@@ -267,11 +267,11 @@ function App() {
                           <span
                             className={
                               uuidAnalysis.isValid
-                                ? "text-green-600"
-                                : "text-red-600"
+                                ? 'text-green-600'
+                                : 'text-red-600'
                             }
                           >
-                            {uuidAnalysis.isValid ? "Yes" : "No"}
+                            {uuidAnalysis.isValid ? 'Yes' : 'No'}
                           </span>
                         </div>
 
@@ -308,7 +308,7 @@ function App() {
                                   <span className="text-xs">
                                     {formatTimestamp(
                                       uuidAnalysis.timestamp,
-                                      uuidAnalysis.version!
+                                      uuidAnalysis.version!,
                                     )}
                                   </span>
                                 </div>
@@ -369,7 +369,7 @@ function App() {
             <Card className="bg-card border-border shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-primary">
-                  <RefreshCw className="w-5 h-5" />
+                  <RefreshCw className="w-5 h-5"/>
                   UUID Generator
                 </CardTitle>
                 <CardDescription>
@@ -411,7 +411,7 @@ function App() {
                   </ToggleGroup>
                 </div>
                 <Button
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                  className="w-full bg-primary hover:bg-accent text-primary-foreground"
                   onClick={handleGenerate}
                 >
                   Generate UUID
@@ -438,7 +438,7 @@ function App() {
                       className="w-min bg-input border-border focus:ring-accent"
                     />
                     <Button
-                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                      className="w-full bg-primary hover:bg-accent text-primary-foreground"
                       onClick={handleGenerateBatch}
                     >
                       Generate Batch
@@ -468,21 +468,21 @@ function App() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-border hover:bg-muted"
+                    className="border-border hover:bg-accent"
                     onClick={handleExport}
                     disabled={generatedUuids.length < 1}
                   >
-                    <Download className="w-4 h-4 mr-2" />
+                    <Download className="w-4 h-4 mr-2"/>
                     Export
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={handleClear}
-                    className="border-border hover:bg-muted"
+                    className="border-border hover:bg-accent"
                     disabled={generatedUuids.length < 1}
                   >
-                    <Trash2 className="w-4 h-4 mr-2" />
+                    <Trash2 className="w-4 h-4 mr-2"/>
                     Clear
                   </Button>
                 </div>
@@ -510,7 +510,7 @@ function App() {
           </Card>
         </main>
       </div>
-      <Toaster />
+      <Toaster/>
     </>
   );
 }
