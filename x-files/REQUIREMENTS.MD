@@ -41,7 +41,7 @@ A casual tool for generating and decoding UUIDs with comprehensive format.
 ## Edge Case Handling
 
 - **Invalid UUID Input**: Clear error messaging with format examples and correction suggestions
-- **Large Batch Requests**: Reasonable limits (max 1000) with performance considerations and progress indication
+- **Large Batch Requests**: Reasonable limits (max 100) with performance considerations and progress indication
 - **Clipboard Access**: Graceful fallback when clipboard API unavailable with manual selection options
 - **Version Compatibility**: Handle deprecated UUID versions with appropriate warnings
 - **Malformed Input**: Robust parsing that identifies partial or corrupted UUIDs
