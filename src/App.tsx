@@ -432,9 +432,10 @@ function App() {
                       max="100"
                       placeholder="5"
                       value={quantity}
-                      onChange={(e) =>
-                        setQuantity(Math.min(100, parseInt(e.target.value, 10)))
-                      }
+                      onChange={(e) => {
+                        const parsed = parseInt(e.target.value, 10);
+                        setQuantity(Math.min(100, isNaN(parsed) ? 1 : parsed));
+                      }}
                       className="w-min bg-input border-border focus:ring-accent"
                     />
                     <Button
