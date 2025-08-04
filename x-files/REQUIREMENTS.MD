@@ -1,6 +1,6 @@
 # Requirements for system
 
-A casual tool for generating and decode UUIDs with comprehensive format.
+A casual tool for generating and decoding UUIDs with comprehensive format.
 
 **Experience Qualities**:
 
