@@ -176,11 +176,20 @@ function App() {
     setGeneratedUuids([]);
   };
 
-  const handleCopyToClipboard = (uuid: string) => {
-    navigator.clipboard.writeText(uuid);
-    toast.success(uuid, {
-      icon: <ClipboardCopy className="w-4 h-4"/>,
-    });
+  const handleCopyToClipboard = async (uuid: string) => {
+    if (!navigator.clipboard) {
+      toast.error('Clipboard API not available in this browser.');
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(uuid);
+      toast.success(uuid, {
+        icon: <ClipboardCopy className="w-4 h-4"/>,
+      });
+    } catch (err) {
+      toast.error('Failed to copy UUID to clipboard.');
+      console.error('Failed to copy: ', err);
+    }
   };
 
   const handleExport = () => {
