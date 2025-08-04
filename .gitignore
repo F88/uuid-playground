@@ -95,12 +95,22 @@ temp/
 
 # Output directories
 dist/
-dist-types/
-lib/
-lib-types/
-pkg/
+# dist-types/
+# lib/
+# lib-types/
+# pkg/
 
 ### Project ###
+
+##  Temporary files ##
+tmp/
+temp/
+
+## TypeScript ##
+tsconfig.tsbuildinfo
+
+## Local files ##
+local-data/
 
 ## environment variables ##
 # Vite
