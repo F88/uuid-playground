@@ -220,7 +220,7 @@ function App() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-primary">
                   <Info className="w-5 h-5"/>
-                  UUID Decorder
+                  UUID Decoder
                 </CardTitle>
                 <CardDescription>
                   Decode UUID to view its metadata and structure
