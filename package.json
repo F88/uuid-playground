@@ -1,6 +1,6 @@
 {
   "name": "uuid-playground",
-  "description": "This project utilizes the Gemini CLI for development assistance. The following files provide context and instructions for the AI.",
+  "description": "A playground for generating and decoding UUIDs.",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -15,7 +15,6 @@
     "url": "https://github.com/F88/uuid-playground/issues"
   },
   "homepage": "https://github.com/F88/uuid-playground#readme",
-  "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -41,7 +40,6 @@
     "@types/node": "^20.14.18",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@types/uuid": "10.0.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@vitejs/plugin-react": "4.7.0",
