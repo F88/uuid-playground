@@ -94,7 +94,7 @@ node_modules/
 temp/
 
 # Output directories
-# dist/
+dist/
 # dist-types/
 # lib/
 # lib-types/
