@@ -1,10 +1,29 @@
-import { useTheme } from "next-themes"
+import { useEffect, useState } from "react";
 import { Toaster as Sonner } from "sonner"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
+// Custom hook to get theme from localStorage or system preference
+function useTheme() {
+  const [theme, setTheme] = useState("system");
+
+  useEffect(() => {
+    // Try to get theme from localStorage
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === "light" || storedTheme === "dark") {
+      setTheme(storedTheme);
+    } else {
+      // Fallback to system preference
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setTheme(prefersDark ? "dark" : "light");
+    }
+  }, []);
+
+  return { theme };
+}
+
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+  const { theme } = useTheme()
 
   return (
     <Sonner
