@@ -1,4 +1,5 @@
-# UUID Playground
+# UUID Playground (developed with Gemini CLI)
+
 
 ## Development with Gemini
 
