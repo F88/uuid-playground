@@ -1,5 +1,6 @@
 # UUID Playground (developed with Gemini CLI)
 
+[![pages-build-deployment](https://github.com/F88/uuid-playground/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/F88/uuid-playground/actions/workflows/pages/pages-build-deployment)
 
 ## Development with Gemini
 
