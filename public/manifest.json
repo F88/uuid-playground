@@ -1,11 +1,11 @@
 {
+  "id": "UUIDPlayground",
   "name": "UUID Playground",
   "short_name": "UUID Playground",
+  "description": "Generate, validate, and visualize UUIDs online.",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
-  "description": "Generate, validate, and visualize UUIDs online.",
+  "orientation": "any",
   "icons": [
     {
       "src": "https://f88.github.io/uuid-playground/icon.png",
