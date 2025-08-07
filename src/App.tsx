@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { toast, Toaster } from 'sonner';
-import { Info, RefreshCw, ClipboardCopy, Download, Trash2, Sparkles, Zap } from 'lucide-react';
+import { Info, RefreshCw, ClipboardCopy, Download, NotepadText, Trash2, Sparkles, Zap } from 'lucide-react';
 
 type UUIDVersion = '1' | '4' | '7';
 
@@ -164,7 +164,7 @@ function App() {
     setIsGenerating(true);
     // Small delay to show loading state
     await new Promise(resolve => setTimeout(resolve, 200));
-    
+
     const newUuid = generateUuid(selectedVersion);
     setGeneratedUuids([newUuid, ...generatedUuids]);
     setUuidToAnalyze(newUuid);
@@ -175,7 +175,7 @@ function App() {
     setIsGenerating(true);
     // Small delay to show loading state for batch generation
     await new Promise(resolve => setTimeout(resolve, 300));
-    
+
     const batch = Array.from({ length: quantity }, () =>
       generateUuid(selectedVersion),
     );
@@ -228,26 +228,27 @@ function App() {
           <header className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="p-3 rounded-full bg-gradient-to-br from-accent to-accent/80 shadow-lg">
-                <Sparkles className="w-8 h-8 text-white" />
+                <Sparkles className="w-8 h-8 text-white"/>
               </div>
-              <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+              <h1
+                className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
                 UUID Generator & Decoder
               </h1>
             </div>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              The professional playground for UUID generation & decoding. 
+              The professional playground for UUID generation & decoding.
               Create, analyze, and manage UUIDs with precision and style.
             </p>
           </header>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             {/* UUID Analysis Card */}
             <Card className="card-enhanced border-border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-primary text-xl font-semibold">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Info className="w-5 h-5 text-primary"/>
-                  </div>
+                  {/*<div className="p-2 rounded-lg bg-primary/10">*/}
+                  <Info className="w-5 h-5 text-primary"/>
+                  {/*</div>*/}
                   UUID Decoder
                 </CardTitle>
                 <CardDescription className="text-base">
@@ -286,7 +287,6 @@ function App() {
                   {uuidAnalysis && (
                     <div className="space-y-3 pt-4 border-t border-border">
                       <h4 className="text-sm font-semibold text-primary flex items-center gap-2">
-                        <Zap className="w-4 h-4" />
                         Analysis Results
                       </h4>
 
@@ -398,9 +398,9 @@ function App() {
             <Card className="card-enhanced border-border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-primary text-xl font-semibold">
-                  <div className="p-2 rounded-lg bg-accent/10">
-                    <RefreshCw className="w-5 h-5 text-accent"/>
-                  </div>
+                  {/*<div className="p-2 rounded-lg bg-accent/10">*/}
+                  <RefreshCw className="w-5 h-5 text-primary"/>
+                  {/*</div>*/}
                   UUID Generator
                 </CardTitle>
                 <CardDescription className="text-base">
@@ -421,32 +421,33 @@ function App() {
                     <ToggleGroupItem
                       variant="outline"
                       value="1"
-                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-primary/10 transition-all duration-200"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-all duration-200"
                     >
                       1
                     </ToggleGroupItem>
                     <ToggleGroupItem
                       variant="outline"
                       value="4"
-                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-primary/10 transition-all duration-200"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-all duration-200"
                     >
                       4
                     </ToggleGroupItem>
                     <ToggleGroupItem
                       variant="outline"
                       value="7"
-                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-primary/10 transition-all duration-200"
+                      className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-all duration-200"
                     >
                       7
                     </ToggleGroupItem>
                   </ToggleGroup>
                 </div>
                 <Button
-                  className={`w-full btn-accent-enhanced text-accent-foreground font-semibold py-6 text-base ${isGenerating ? 'loading-pulse' : ''}`}
+                  // className={`w-full btn-accent-enhanced text-accent-foreground font-semibold py-6 text-base ${isGenerating ? 'loading-pulse' : ''}`}
+                  className="w-full bg-primary hover:bg-accent text-primary-foreground"
                   onClick={handleGenerate}
-                  disabled={isGenerating}
+                  // disabled={isGenerating}
                 >
-                  <RefreshCw className={`w-5 h-5 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-5 h-5 mr-2 ${isGenerating ? 'animate-spin' : ''}`}/>
                   {isGenerating ? 'Generating...' : 'Generate UUID'}
                 </Button>
 
@@ -472,11 +473,12 @@ function App() {
                       className="w-24 bg-input border-border focus:ring-accent transition-all duration-200"
                     />
                     <Button
-                      className={`flex-1 btn-primary-enhanced text-primary-foreground font-semibold ${isGenerating ? 'loading-pulse' : ''}`}
+                      // className="w-full bg-primary hover:bg-accent text-primary-foreground"
+                      className={`w-full bg-primary hover:bg-accent text-primary-foreground font-semibold ${isGenerating ? 'loading-pulse' : ''}`}
                       onClick={handleGenerateBatch}
-                      disabled={isGenerating}
+                      // disabled={isGenerating}
                     >
-                      <Zap className={`w-4 h-4 mr-2 ${isGenerating ? 'animate-pulse' : ''}`} />
+                      <Zap className={`w-4 h-4 mr-2 ${isGenerating ? 'animate-pulse' : ''}`}/>
                       {isGenerating ? 'Generating...' : 'Generate Batch'}
                     </Button>
                   </div>
@@ -491,9 +493,9 @@ function App() {
               <div className="flex justify-between items-center">
                 <div>
                   <CardTitle className="text-primary text-xl font-semibold flex items-center gap-2">
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <ClipboardCopy className="w-5 h-5 text-primary"/>
-                    </div>
+                    {/*<div className="p-2 rounded-lg bg-primary/10">*/}
+                    <NotepadText className="w-5 h-5 text-primary"/>
+                    {/*</div>*/}
                     Generated UUIDs
                   </CardTitle>
                   <CardDescription className="text-base mt-1">
@@ -537,19 +539,20 @@ function App() {
                       onClick={() => handleCopyToClipboard(uuid)}
                     >
                       <span className="flex-1 select-all">{uuid}</span>
-                      <ClipboardCopy className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-200" />
+                      <ClipboardCopy
+                        className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-200"/>
                     </div>
                   ))
                 ) : (
                   <div className="empty-state">
                     <div className="mb-4">
                       <div className="w-16 h-16 mx-auto mb-4 p-4 rounded-full bg-muted/30">
-                        <Sparkles className="w-8 h-8 text-muted-foreground" />
+                        <Sparkles className="w-8 h-8 text-muted-foreground"/>
                       </div>
                       <h3 className="text-lg font-semibold text-foreground mb-2">Ready to Generate</h3>
                       <p className="text-muted-foreground">
                         Click "Generate UUID" above to create your first UUID.
-                        <br />
+                        <br/>
                         All generated UUIDs will appear here for easy copying.
                       </p>
                     </div>
