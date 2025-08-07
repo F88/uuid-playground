@@ -1,3 +1,4 @@
+import vitest from '@vitest/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import reactDom from 'eslint-plugin-react-dom';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -69,6 +70,34 @@ export default tseslint.config(
       'react-dom/no-dangerously-set-innerhtml': 'warn',
       // Put rules you want to override here
       'react-x/no-class-component': 'warn',
+    },
+  },
+  {
+    files: [
+      'src/**/*.test.ts',
+      'src/**/*.test.tsx',
+      'src/**/*.spec.ts',
+      'src/**/*.spec.tsx',
+      'test/**/*.ts',
+      'test/**/*.tsx',
+    ],
+    plugins: {
+      vitest,
+    },
+    rules: {
+      // disable `any` checks in tests
+      // '@typescript-eslint/no-unsafe-assignment': 'off',
+      ...vitest.configs.recommended.rules,
+    },
+    settings: {
+      vitest: {
+        typecheck: true,
+      },
+    },
+    languageOptions: {
+      globals: {
+        ...vitest.environments.env.globals,
+      },
     },
   },
 
