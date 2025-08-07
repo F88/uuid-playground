@@ -127,5 +127,5 @@ UUID Playground is a React + TypeScript + Vite web application for generating, v
 - **No backend required**: Pure frontend application, all UUID operations run client-side
 - **Browser compatibility**: Modern browsers with ES2020 support required
 - **Clipboard API**: Copy functionality requires secure context (HTTPS in production)
-- **File paths**: Always use absolute paths starting with `/home/runner/work/uuid-playground/uuid-playground/`
+- **File paths**: Use relative paths for file references in local development. Only use absolute paths like `/home/runner/work/uuid-playground/uuid-playground/` when working within GitHub Actions workflows.
 - **Dependencies**: All required packages are in package.json, no additional installations needed
