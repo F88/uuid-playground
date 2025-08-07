@@ -29,6 +29,13 @@
 
     --font-sans: "Inter", sans-serif;
     --font-mono: "Nanum Gothic Coding", monospace;
+    
+    /* Custom gradient variables */
+    --gradient-primary: linear-gradient(135deg, hsl(225 7% 29%) 0%, hsl(225 10% 35%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(33 79% 63%) 0%, hsl(28 85% 58%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(240 5% 98%) 100%);
+    --shadow-card: 0 1px 3px 0 hsl(240 5% 80% / 0.1), 0 1px 2px -1px hsl(240 5% 80% / 0.1);
+    --shadow-card-hover: 0 4px 6px -1px hsl(240 5% 80% / 0.1), 0 2px 4px -2px hsl(240 5% 80% / 0.1);
   }
 
   .dark {
@@ -61,5 +68,94 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Enhanced card styling */
+  .card-enhanced {
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  
+  .card-enhanced:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-1px);
+  }
+
+  /* Enhanced button styling */
+  .btn-primary-enhanced {
+    background: var(--gradient-primary);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px hsl(225 7% 29% / 0.2);
+  }
+  
+  .btn-primary-enhanced:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px hsl(225 7% 29% / 0.3);
+  }
+
+  .btn-accent-enhanced {
+    background: var(--gradient-accent);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px hsl(33 79% 63% / 0.2);
+  }
+  
+  .btn-accent-enhanced:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px hsl(33 79% 63% / 0.3);
+  }
+
+  /* Clickable UUID styling */
+  .uuid-item {
+    @apply cursor-pointer transition-all duration-200 ease-in-out;
+    @apply hover:bg-accent/5 hover:border-accent/20;
+    @apply border border-transparent rounded-md;
+  }
+  
+  .uuid-item:hover {
+    transform: translateX(2px);
+  }
+
+  /* Empty state styling */
+  .empty-state {
+    @apply text-center py-12 px-6;
+    background: linear-gradient(135deg, hsl(240 5% 98%) 0%, hsl(240 3% 96%) 100%);
+    border: 2px dashed hsl(240 5.9% 90%);
+    border-radius: 0.75rem;
+  }
+
+  /* Loading animation */
+  .loading-pulse {
+    animation: pulse-glow 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 0 hsl(33 79% 63% / 0);
+    }
+    50% {
+      opacity: 0.8;
+      box-shadow: 0 0 20px hsl(33 79% 63% / 0.2);
+    }
+  }
+
+  /* Micro-interactions */
+  .micro-bounce {
+    animation: micro-bounce 0.6s ease-in-out;
+  }
+
+  @keyframes micro-bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-4px);
+    }
+    60% {
+      transform: translateY(-2px);
+    }
   }
 }
