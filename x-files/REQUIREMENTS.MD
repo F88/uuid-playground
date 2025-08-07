@@ -54,3 +54,9 @@ A casual tool for generating and decoding UUIDs with comprehensive format.
 - **Icon Selection**: Copy icon for clipboard actions, refresh for generation, info for analysis sections, warning for validation errors
 - **Spacing**: Consistent 16px base spacing with 24px section gaps, 8px for related elements
 - **Mobile**: Stack sections vertically, ensure touch-friendly 44px minimum targets, responsive text scaling for UUID display
+
+## Future Considerations
+
+- Support for additional UUID versions or formats.
+- A feature to convert UUIDs between different formats (e.g., with/without hyphens).
+- Saving and managing a history of generated UUIDs.

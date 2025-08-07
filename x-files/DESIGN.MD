@@ -35,3 +35,23 @@ Subtle, functional animations that provide immediate feedback for technical acti
 - **Purposeful Meaning**: Quick micro-interactions communicate successful operations and guide attention to results
 - **Hierarchy of Movement**: Generate buttons get subtle bounce, successful operations show brief highlight, format changes use smooth transitions
 
+## Data Flow
+
+- **UUID Generation**:
+    1. User selects a UUID version (v1, v4, v7).
+    2. User configures options (e.g., batch quantity).
+    3. User clicks the "Generate" button.
+    4. The application generates the specified UUID(s).
+    5. The generated UUID(s) are displayed and can be copied to the clipboard.
+- **UUID Analysis**:
+    1. User pastes or types a UUID into the analysis field.
+    2. The application validates the UUID format.
+    3. If valid, it extracts metadata (version, timestamp, etc.).
+    4. The extracted metadata is displayed in a structured format.
+
+## Responsive Design
+
+- On mobile devices, sections will stack vertically.
+- Touch targets will have a minimum size of 44px.
+- Text scaling will be used for UUID display to ensure readability.
+
