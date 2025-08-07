@@ -63,7 +63,7 @@ UUID Playground is a React + TypeScript + Vite web application for generating, v
 
 ### File Structure
 ```
-/home/runner/work/uuid-playground/uuid-playground/
+./
 ├── src/
 │   ├── App.tsx                 # Main application component
 │   ├── components/ui/          # shadcn/ui components
