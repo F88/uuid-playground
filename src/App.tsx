@@ -423,21 +423,21 @@ function App() {
                       value="1"
                       className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-primary/10 transition-all duration-200"
                     >
-                      v1
+                      1
                     </ToggleGroupItem>
                     <ToggleGroupItem
                       variant="outline"
                       value="4"
                       className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-primary/10 transition-all duration-200"
                     >
-                      v4
+                      4
                     </ToggleGroupItem>
                     <ToggleGroupItem
                       variant="outline"
                       value="7"
                       className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-primary/10 transition-all duration-200"
                     >
-                      v7
+                      7
                     </ToggleGroupItem>
                   </ToggleGroup>
                 </div>
