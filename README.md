@@ -8,7 +8,7 @@ UUID Playground is a web application for generating, validating, and visualizing
 
 UUID Playgroundは、UUID（Universally Unique Identifier）を生成、検証、視覚化するためのウェブアプリケーションです。UUIDの様々なバージョンを簡単に生成し、その構造を検査し、有効性を確認できます。このツールは、開発者やエンジニアがUUIDの仕組みを理解し、実際に実験しながらインタラクティブに学習できるように設計されています。
 
-![app-image.png](docs/app-image.png)
+![app-image-2.png](docs/app-image-2.png)
 
 ## Development with Gemini
 
